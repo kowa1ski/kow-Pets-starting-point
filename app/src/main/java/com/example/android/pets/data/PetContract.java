@@ -31,7 +31,7 @@ public final class PetContract {
 
         /**
          * Name of the pet
-         *
+         0*
          * Type: TEXT
          */
         public final static String COLUMN_PET_NAME = "name";
@@ -71,29 +71,3 @@ public final class PetContract {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
