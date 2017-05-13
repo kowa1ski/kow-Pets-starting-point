@@ -16,6 +16,8 @@
 package com.example.android.pets;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import com.example.android.pets.data.PetContract;
+import com.example.android.pets.data.PetDbHelper;
 
 /**
  * Displays list of pets that were entered and stored in the app.
@@ -44,7 +50,10 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
