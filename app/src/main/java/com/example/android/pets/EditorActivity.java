@@ -118,6 +118,12 @@ public class EditorActivity extends AppCompatActivity {
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
         String weigthString = mWeightEditText.getText().toString().trim();
+        // To prevent {@link weigthString} is empty
+        // Resulta que si esa variable se queda vacía(que no es lo mismo que que valga 0), la conversión
+        // a integer en la siguiente línea no funciona y provoca un crash.
+        // Buena nota a este if porque Udacity no ha contemplado este posibilidad en su código.
+        if ("".equals(weigthString)) { weigthString = "0";}
+
         int weigth = Integer.parseInt(weigthString);
 
         // Create database helper
