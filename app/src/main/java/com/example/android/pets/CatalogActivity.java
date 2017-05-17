@@ -66,7 +66,7 @@ public class CatalogActivity extends AppCompatActivity {
         // Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
         // Nota cas: performing...
 
-        String[] project = {
+        String[] projection = {
                 PetEntry._ID,
                 PetEntry.COLUMN_PET_NAME,
                 PetEntry.COLUMN_PET_BREED,
@@ -76,7 +76,7 @@ public class CatalogActivity extends AppCompatActivity {
 
         Cursor cursor = db.query(
                 PetEntry.TABLE_NAME, // the table to query
-                project,             // the columns to return
+                projection,             // the columns to return
                 null,                // the columns for the WHERE clause
                 null,                // the values for the WHERE clause
                 null,                // Don´t group the rows
@@ -96,12 +96,37 @@ public class CatalogActivity extends AppCompatActivity {
             //
             // In the while loop below, iterate through the rows of the cursor and display
             // the information from each colum in this order.
-            displayView.append("The pets table contains " + cursor.getCount() + " pets.\n\n");
+            displayView.setText("The pets table contains " + cursor.getCount() + " pets.\n\n");
             displayView.append(PetEntry._ID + " - " +
                     PetEntry.COLUMN_PET_NAME + " - " +
                     PetEntry.COLUMN_PET_BREED + " - " +
                     PetEntry.COLUMN_PET_GENDER + " - " +
                     PetEntry.COLUMN_PET_WEIGHT + "\n" );
+
+            // Figure out the index of each column
+            int idColumIndex = cursor.getColumnIndex(PetEntry._ID);
+            int nameColumIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
+            int breedColumIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
+            int genderColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
+            int weihtColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
+
+            // Iterate trough all the returned rows in the cursor
+            while (cursor.moveToNext()) {
+                // Use that index to extract the String or Int value of the word
+                // at the current row the cursor is on.
+                int currentID = cursor.getInt(idColumIndex);
+                String currentName = cursor.getString(nameColumIndex);
+                String currentBreed = cursor.getString(breedColumIndex);
+                int currentGender = cursor.getInt(genderColumnIndex);
+                int currentWeiht = cursor.getInt(weihtColumnIndex);
+                // Display the values from each column of the current row in the cursor in the TextView
+                displayView.append("\n"+ currentID + " - " +
+                        currentName + " - " +
+                        currentBreed + " - " +
+                        currentGender + " - " +
+                        currentWeiht
+                );
+            }
 
 
         } finally {
