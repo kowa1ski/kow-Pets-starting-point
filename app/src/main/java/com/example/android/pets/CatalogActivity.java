@@ -75,20 +75,35 @@ public class CatalogActivity extends AppCompatActivity {
         };
 
         Cursor cursor = db.query(
-                PetEntry.TABLE_NAME,
-                project,
-                null,
-                null,
-                null,
-                null,
-                null
+                PetEntry.TABLE_NAME, // the table to query
+                project,             // the columns to return
+                null,                // the columns for the WHERE clause
+                null,                // the values for the WHERE clause
+                null,                // Don´t group the rows
+                null,                // Don´t filter by row groups
+                null                 // The sort order
         );
 
+        TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+
         try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            // Create a header in the TextView that looks like this:
+
+            //
+            // The pets table contains <number of rows in Cursor> pets.
+            // _id - name - breed - gender - weight
+
+            //
+            // In the while loop below, iterate through the rows of the cursor and display
+            // the information from each colum in this order.
+            displayView.append("The pets table contains " + cursor.getCount() + " pets.\n\n");
+            displayView.append(PetEntry._ID + " - " +
+                    PetEntry.COLUMN_PET_NAME + " - " +
+                    PetEntry.COLUMN_PET_BREED + " - " +
+                    PetEntry.COLUMN_PET_GENDER + " - " +
+                    PetEntry.COLUMN_PET_WEIGHT + "\n" );
+
+
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
