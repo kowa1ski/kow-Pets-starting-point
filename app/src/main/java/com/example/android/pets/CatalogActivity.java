@@ -21,6 +21,7 @@ import com.example.android.pets.data.PetDbHelper;
  */
 public class CatalogActivity extends AppCompatActivity {
 
+
     private PetDbHelper mDbHelper;
 
     @Override
