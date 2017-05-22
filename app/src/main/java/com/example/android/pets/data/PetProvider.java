@@ -11,36 +11,81 @@ import android.support.annotation.Nullable;
  */
 
 public class PetProvider extends ContentProvider {
+
+    //** Tag for the log messages */
+    private static final String TAG = "PetProvider";
+
+
+    /**
+     * Initialize the provider and the database helper object
+     * @return
+     */
     @Override
     public boolean onCreate() {
-        return false;
+        // TODO: Create and initialize a PetHelper object to gain access to the pets
+        // Make sure the variable is a global variable, so it can be referenced from other
+        // Content Provider methods
+        return true;
     }
 
-    @Nullable
+    /**
+     * Perform the query for the given Uri. Use the given projection, selection,
+     * selection arguments, and sort order.
+     * @param uri
+     * @param projection
+     * @param selection
+     * @param selectionArgs
+     * @param sortOrder
+     * @return
+     */
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         return null;
     }
 
-    @Nullable
+    /**
+     * Returns the MIME type of data for the content URI.
+     * @param uri
+     * @return
+     */
     @Override
     public String getType(Uri uri) {
         return null;
     }
 
-    @Nullable
+    /**
+     * Insert new data into the provider with the given ContentValues
+     * @param uri
+     * @param contentValues
+     * @return
+     */
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
         return null;
     }
 
+    /**
+     * Delete the data at the given selection and selection arguments
+     * @param uri
+     * @param selection
+     * @param selectionArgs
+     * @return
+     */
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
         return 0;
     }
 
+    /**
+     * Updates the data at the given selection and selection argumens, with the new ContentValues.
+     * @param uri
+     * @param contentValues
+     * @param selection
+     * @param selectionArgs
+     * @return
+     */
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         return 0;
     }
 }
