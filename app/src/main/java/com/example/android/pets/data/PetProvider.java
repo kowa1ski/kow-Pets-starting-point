@@ -1,10 +1,16 @@
 package com.example.android.pets.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+
+
+
 
 /**
  * Created by Usuario on 21/05/2017.
@@ -12,8 +18,28 @@ import android.support.annotation.Nullable;
 
 public class PetProvider extends ContentProvider {
 
+
     //** Tag for the log messages */
     private static final String TAG = "PetProvider";
+
+    /** URI matcher code for the content URI for the pets table */
+    private static final int PETS = 100;
+
+    /** URI matcher code for the content URI for a single pet in the pets table */
+    private static final int PET_ID = 101;
+
+    /**
+     * UriMatcher object to match a content URI to a corresponding code.
+     * The input passed into the constructor represents the code to return for the root URI.
+     * It´s common to use NO_MATCH as the input for this case.
+     */
+    private static final UriMatcher sUrimatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    // Static initializer. This is run the first time anything is called from this class.
+    static {
+        sUrimatcher.addURI(PetContract.CONTENT_AUTHORITY, PetContract.PATH_PETS, PETS);
+        sUrimatcher.addURI(PetContract.CONTENT_AUTHORITY, PetContract.PATH_PETS + "/#", PET_ID);
+    }
 
     /* Database helper object */
     private PetDbHelper mDbHelper;
@@ -40,7 +66,27 @@ public class PetProvider extends ContentProvider {
      */
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        int match = sUrimatcher.match(uri);
+        switch (match){
+            case PETS:
+                cursor = db.query(PetContract.PetEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case PET_ID:
+                selection = PetContract.PetEntry._ID + "+?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+
+                cursor = db.query(PetContract.PetEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            default:
+                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
+
+        }
+        return cursor;
     }
 
     /**
