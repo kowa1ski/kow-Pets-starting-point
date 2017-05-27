@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetEntry;
-import com.example.android.pets.data.PetDbHelper;
+
 
 /**
  * Displays list of pets that were entered and stored in the app.
@@ -23,7 +24,7 @@ import com.example.android.pets.data.PetDbHelper;
 public class CatalogActivity extends AppCompatActivity {
 
 
-    private PetDbHelper mDbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
-        mDbHelper = new PetDbHelper(this);
+
 
     }
 
@@ -137,18 +138,16 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     private void insertPet(){
-        // Gets the data repository in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        // Gets the data repository in write mode. Only for debugging porposes.
+
 
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, "Toto");
         values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
-        values.put(PetEntry.COLUMN_PET_WEIGHT, 0);
+        values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
 
-        long newRowID = db.insert(PetEntry.TABLE_NAME, null, values);
-
-        Log.v("CatalogActivity", "New Row ID " + newRowID);
+        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
     }
 
 
