@@ -162,8 +162,23 @@ public class PetProvider extends ContentProvider {
      * @return
      */
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs)  {
+        // Get writeable database
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        final int match = sUrimatcher.match(uri);
+        switch (match) {
+            case PETS:
+                // Delete all rows that the selection and selection args
+                return database.delete(PetContract.PetEntry.TABLE_NAME, selection, selectionArgs);
+            case PET_ID:
+                // Delete a single row given by the ID in the URI
+                selection = PetContract.PetEntry._ID + "=?";
+                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                return database.delete(PetContract.PetEntry.TABLE_NAME, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Deletion is not suported for " + uri);
+        }
     }
 
     /**
