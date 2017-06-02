@@ -85,6 +85,12 @@ public class PetProvider extends ContentProvider {
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
 
         }
+
+        // Set notification URI on the Cursor.
+        // So we know what content URI the Cursor was created for.
+        // If the data at this URI changes, then we know we need to update the Cursor
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
         return cursor;
     }
 
@@ -159,6 +165,10 @@ public class PetProvider extends ContentProvider {
             Log.e("LogTag", "Failed to insert row for " + uri);
             return null;
         }
+
+        // Notify all listeners that the data has changed for the pet content URI
+        // uri: content://com.example.android.pets/pets
+        getContext().getContentResolver().notifyChange(uri, null);
 
         // Once we know the ID of the new row in the table,
         // return the new URI with the ID appended to the end of it
