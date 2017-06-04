@@ -64,6 +64,14 @@ public class EditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        // Use getIntent() and getData to get the associated URI
+
+        // Set title of EditorActivity on which situation we have
+        // If the EditorActivity was openned using the ListView item, then we will
+        // have uri of pet so change app bar to say "Edit Pet"
+        // Otherwise if this is a new pet, uri is null so change app bar to say "Add a Pet"
+
+
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.edit_pet_name);
         mBreedEditText = (EditText) findViewById(R.id.edit_pet_breed);
