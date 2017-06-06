@@ -16,6 +16,7 @@
 package com.example.android.pets;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -64,7 +65,23 @@ public class EditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        // Use getIntent() and getData to get the associated URI
+        // Use getIntent() and getData to get the associated URI.
+        // nota cas: OK. Come ON!!
+
+        // Examine the intent that was used to launch this activity,
+        // in order to figure out if we're creating a new pet or editing an existing one.
+        Intent intent = getIntent();
+        Uri currentPetUri = intent.getData();
+
+        // If the intent DOES NOT contain a pet content URI, then we know that we are
+        // creating a new pet.
+        if (currentPetUri == null){
+            // This is a new pet, so change the app bar to say "Add a pet".
+            setTitle(getString(R.string.editor_activity_title_new_pet));
+        } else {
+            // Otherwise this is an existing pet, so change app bar to say "Edit Pet"
+            setTitle(getString(R.string.editor_activity_title_edit_pet));
+        }
 
         // Set title of EditorActivity on which situation we have
         // If the EditorActivity was openned using the ListView item, then we will

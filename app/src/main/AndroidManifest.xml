@@ -27,9 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!-- De lo siguiente he eliminado la label por defecto para cambiarsela con el codigo -->
         <activity
             android:name=".EditorActivity"
-            android:label="@string/editor_activity_title_new_pet"
+
             android:theme="@style/EditorTheme"
             android:parentActivityName=".CatalogActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
