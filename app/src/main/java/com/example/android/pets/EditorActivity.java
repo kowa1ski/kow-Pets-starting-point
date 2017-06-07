@@ -21,10 +21,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
+import android.app.LoaderManager;
 import android.support.v4.app.NavUtils;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -43,24 +43,34 @@ import com.example.android.pets.data.PetDbHelper;
 /**
  * Allows user to create a new pet or edit an existing one.
  */
-public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // Identifier for the pet data loader
-    private static final int EXISTING_PET_LOADER = 0 ;
+    private static final int EXISTING_PET_LOADER = 0;
 
-    /** Content URI for the existing pet (null if it´s a new pet) */
+    /**
+     * Content URI for the existing pet (null if it´s a new pet)
+     */
     private Uri mCurrentPetUri;
 
-    /** EditText field to enter the pet's name */
+    /**
+     * EditText field to enter the pet's name
+     */
     private EditText mNameEditText;
 
-    /** EditText field to enter the pet's breed */
+    /**
+     * EditText field to enter the pet's breed
+     */
     private EditText mBreedEditText;
 
-    /** EditText field to enter the pet's weight */
+    /**
+     * EditText field to enter the pet's weight
+     */
     private EditText mWeightEditText;
 
-    /** EditText field to enter the pet's gender */
+    /**
+     * EditText field to enter the pet's gender
+     */
     private Spinner mGenderSpinner;
 
     /**
@@ -85,7 +95,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // If the intent DOES NOT contain a pet content URI, then we know that we are
         // creating a new pet.
-        if (mCurrentPetUri == null){
+        if (mCurrentPetUri == null) {
             // This is a new pet, so change the app bar to say "Add a pet".
             setTitle(getString(R.string.editor_activity_title_new_pet));
         } else {
@@ -154,7 +164,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * Get user input from editor and save new pet into database.
      */
 
-    private void insertPet(){
+    private void insertPet() {
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
         String weigthString = mWeightEditText.getText().toString().trim();
@@ -162,7 +172,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Resulta que si esa variable se queda vacía(que no es lo mismo que que valga 0), la conversión
         // a integer en la siguiente línea no funciona y provoca un crash.
         // Buena nota a este if porque Udacity no ha contemplado este posibilidad en su código.
-        if ("".equals(weigthString)) { weigthString = "0";}
+        if ("".equals(weigthString)) {
+            weigthString = "0";
+        }
 
         int weigth = Integer.parseInt(weigthString);
 
@@ -186,7 +198,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Otherwise, the insertion was sucessful and we can display a toast
             Toast.makeText(this, getString(R.string.editor_insert_pet_successful), Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
@@ -228,7 +239,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Since the editor shows all pet attributes, define a projection that contains
         // all columns from the pet table.
         String[] projection = {
-          PetEntry._ID,
+                PetEntry._ID,
                 PetEntry.COLUMN_PET_NAME,
                 PetEntry.COLUMN_PET_BREED,
                 PetEntry.COLUMN_PET_GENDER,
@@ -244,18 +255,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 null                    // Default sort order
         );
 
-        }
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         // Bail early if the cursor is null or there is less than 1 row in the cursor.
-        if (cursor == null || cursor.getCount() > 1){
+        if (cursor == null || cursor.getCount() > 1) {
             return;
         }
 
         // Proceed with moving to the first row of the cursor and reading data from it
         // (This should be the only row in the cursor)
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             // Find the columns of pet attribures that we're interested in.
             int nameColumIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
             int breedColumIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
@@ -276,7 +287,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Gender is a dropdown spinner, so map the constant value from the database
             // into one of the drpdown options.
             // Then call setSelection() so that option is displayed on screen as the current selection.
-            switch (gender){
+            switch (gender) {
                 case PetEntry.GENDER_MALE:
                     mGenderSpinner.setSelection(1);
                     break;
