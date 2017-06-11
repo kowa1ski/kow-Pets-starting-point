@@ -161,10 +161,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     /**
-     * Get user input from editor and save new pet into database.
+     * Get user input from editor and save pet into database.
      */
 
-    private void insertPet() {
+    private void savePet() {
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
         String weigthString = mWeightEditText.getText().toString().trim();
@@ -216,8 +216,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Insert Pet
-                insertPet();
+                // save pet to database
+                savePet();
+                // Exit activity
                 // Return from this Activity to CatalogActivity
                 finish();
                 return true;
@@ -260,7 +261,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         // Bail early if the cursor is null or there is less than 1 row in the cursor.
-        if (cursor == null || cursor.getCount() > 1) {
+        if (cursor == null || cursor.getCount() < 1) {
             return;
         }
 
