@@ -168,15 +168,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
         String weigthString = mWeightEditText.getText().toString().trim();
-        // To prevent {@link weigthString} is empty
-        // Resulta que si esa variable se queda vacía(que no es lo mismo que que valga 0), la conversión
-        // a integer en la siguiente línea no funciona y provoca un crash.
-        // Buena nota a este if porque Udacity no ha contemplado este posibilidad en su código.
-        if ("".equals(weigthString)) {
-            weigthString = "0";
-        }
 
-        int weigth = Integer.parseInt(weigthString);
+        // Check if this is supposed to be a new pet
+        // and check if all the fields in the editor are blank
+        if (mCurrentPetUri == null &&
+                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(breedString) &&
+                TextUtils.isEmpty(weigthString) && mGender == PetEntry.GENDER_UNKNOWN) {
+            // Since no fields were modified, we can return early without creating a new pet.
+            // No need to crete ContentValues and no need to do any ContentProvider operations.
+            return;
+        }
 
         // Create a ContentValues objetc where comlumn names are the keys,
         // and pet attribures from the editor are the values.
@@ -184,6 +185,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(PetEntry.COLUMN_PET_NAME, nameString);
         values.put(PetEntry.COLUMN_PET_BREED, breedString);
         values.put(PetEntry.COLUMN_PET_GENDER, mGender);
+        // If the weight is not provided by the user, don't try parse the string into an
+        // integer value. Use 0 by default.
+        int weigth = 0;
+        if (!TextUtils.isEmpty(weigthString)) {
+            weigth = Integer.parseInt(weigthString);
+        }
         values.put(PetEntry.COLUMN_PET_WEIGHT, weigth);
 
         // Determine fi this is a new or existing pet by checking mCurrentPetUri is null or not
