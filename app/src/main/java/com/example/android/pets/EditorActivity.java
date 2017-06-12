@@ -186,7 +186,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(PetEntry.COLUMN_PET_BREED, breedString);
         values.put(PetEntry.COLUMN_PET_GENDER, mGender);
         // If the weight is not provided by the user, don't try parse the string into an
-        // integer value. Use 0 by default.
+        // integer value. Use 0 value by default.
         int weigth = 0;
         if (!TextUtils.isEmpty(weigthString)) {
             weigth = Integer.parseInt(weigthString);
